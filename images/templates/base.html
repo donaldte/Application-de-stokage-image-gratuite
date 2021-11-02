@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static './css/bootstrap.min.css' %}">  
+    <script src="{% static './js/all.js' %}"></script> 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>africaImage</title>
+    <style>
+    .bg{
+      background-color: #3f51b5!important;
+    }
+    .ted{
+      color:white !important;
+      
+    }
+
+    .logo{
+      color: rgb(9, 255, 0);
+    }
+
+    a:hover{
+        background-color: #ff5c00!important;
+        text-decoration: chocolate;
+    }
+    </style>
+</head>
+<body>
+   <div class="container-fluid">
+       <div class="row">
+           <div class="col-md-12">
+            <nav class="navbar navbar-expand-md navbar-light bg-light bg">
+                <a class="navbar-brand" href="{% url 'home' %}"> <span class="logo"> AVIOR</span></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link ted" href="{% url 'home' %}">Acceuil <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link ted " href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                      <div class="dropdown show">
+                        <a class="nav-link ted dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </a>
+                
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            
+                            {% for element in card %}
+                                <a href="/category/{{ element.pk }}" class=" dropdown-item ">
+                                    {{ element.title }}
+                                </a>
+                            {% endfor %}
+                        
+                        </div>
+                        </div>  
+                    </li>
+                     
+                    
+            
+                  </ul>
+                  <form id="search-form" class="form-inline my-2 my-lg-0">
+                    <input id="search-name" class="form-control mr-sm-2" name='name', type="search" placeholder="Recherche" aria-label="Recherche">
+                    <button class="btn btn-outline-info my-2 my-sm-0" style="color: white !important;" type="submit">Recherche</button>
+                  </form>
+                </div>
+              </nav>
+        
+        
+            
+        
+         
+           </div>
+       </div>
+<div class="row text-center mt-3">
+  <div class="col-md-12">
+     <button type="button" class="btn btn-warning btn-sm ml-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Envoiyez une image </button>
+
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center text-primary" id="exampleModalLabel">Evoyez nous une image pour aider la communaute.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="post-form" action="">
+          {% csrf_token %}
+          
+            <label for="username">Votre nom</label>
+            <input required class="form-control" type="text" name="username" id="username">
+            <label for="image">Image</label>
+            <input required class="form-control" name="image" type="file" id="image">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <input type="submit" class="btn btn-primary" value="Envoiyez">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+       {% block content %}{% endblock %}
+   </div>
+
+        <!-- Footer -->
+        <footer class="page-footer font-small special-color-dark pt-4" style='background: rgb(19, 44, 44); color: white;'>
+        
+            <!-- Footer Elements -->
+            <div class="container">
+          
+              <!-- Social buttons -->
+              <ul class="list-unstyled list-inline text-center">
+                <li class="list-inline-item">
+                  <a href="https://web.facebook.com/Programmeurs-Python-105262631722760" class="btn-floating btn-fb mx-1">
+                    <i class="fab fa-facebook-f"> </i>
+                </li>
+                <li class="list-inline-item">
+                  <a href="https://twitter.com/DProgrammeur" class="btn-floating btn-tw mx-1">
+                    <i class="fab fa-twitter"> </i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="https://www.youtube.com/channel/UCE0rrl2C0vBM81bdYVnajWQ" class="btn-floating btn-gplus mx-1">
+                    <i class="fab fa-youtube"> </i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="https://www.instagram.com/danaldprogrammeur/" class="btn-floating btn-li mx-1">
+                    <i class="fab fa-instagram"> </i>
+                  </a>
+                </li>
+                
+              </ul>
+              <!-- Social buttons -->
+          
+            </div>
+            <!-- Footer Elements -->
+          
+            <!-- Copyright -->
+            <div class="footer-copyright text-center py-3">© 2021 Copyright:
+              <em>Dprogrammeur <span class="text-warning">sponsoriser par: AfricaCode</span></em>
+            </div>
+            <!-- Copyright -->
+          
+          </footer>
+          <!-- Footer -->
+
+   <script src="{% static './js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+
+    {% block js %}{% endblock %}
+    <script type="text/javascript">
+    $(document).on('submit', '#post-form', function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url: "{% url 'create' %}",
+            data:{
+                name:$('#username').val(),
+                image:$('#image').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+
+            },
+            success:function(){
+                alert('Merci beaucoup nous avons recu!');
+            },
+            errors:function(response){
+                alert('Il y a une erreur lors de l\'envoi');
+            }
+            
+        })
+    })
+
+    
+</script>
+</body>
+</html>

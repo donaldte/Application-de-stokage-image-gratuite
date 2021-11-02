@@ -1,0 +1,26 @@
+b{
+    font-family: 'Noto Sans KR', sans-serif;
+
+}
+ .height{
+     min-height: 100vh;
+ }
+.text-underline{
+    width: 200px;
+    height: 10px;
+    margin: 0 auto;
+    /* background: blue!important; */
+}
+.height-80{
+    min-height: 100vh;
+}
+.about-picture{
+    background: url(../img/about.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+#filer, #progress{
+    background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url(../img/about.jpg)center/cover no-repeat fixed;
+}

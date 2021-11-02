@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="text-center text-primary" style="text-decoration: underline;"> Remplir le Formulaire pour nous contacter.</h3>
+<form method="POST" action="">
+    <div class="row my-5 text-center">
+        <div class="col-md-12">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary w-50">Envoyez</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+ 

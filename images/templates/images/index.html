@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+<style>
+    a:hover{
+        background-color: #ff5c00!important;
+    }
+</style>
+
+    <div class="col-md-12 mt-3">
+        <!-- images -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-columns">
+                {% if images.is_empty %}
+                    <h3 class="text-center text-info"> Nous somme desole votre image de recherche n'existe pas encore</h3>
+                
+                {% else %}
+                    {% for image in images %}
+                        <div class="col">
+                            <div class="card">
+                                <img src="{{ image.image.url }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ image.name|capfirst }}</h6>
+                                    <p class="card-text text-muted"> {{ image.description }}</p>
+                                    <a href="#" class="btn btn-sm btn-primary" onclick="afficherImage('{{ image.image.url }}')" style="background-color: #3f51b5!important;">Voire</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}    
+                </div>    
+            </div>
+        </div>
+
+        
+
+
+        
+    </div>
+    
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="model-image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">AVIOR IMAGE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="" class="img-fluid" id="show-image" alt="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <a href="" id='download-image' type="button" download class="btn btn-primary">Telecharger</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+                <div class="col-md-3 offset-md-4">
+                    <ul class="pagination">
+                      {% if images.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ images.previous_page_number }}">Precedent</a>
+                        </li>
+                      {% endif %}  
+
+
+                      <li class="page-item active">
+                        <a class="page-link" href="?page={{ images.number }}">{{ images.number }}</a>
+                      </li>
+
+                      {% if images.has_next %}
+                         <li class="page-item">
+                            <a class="page-link" href="?page={{ images.next_page_number }}">Suivant</a>
+                         </li>      
+                      {% endif %}
+              
+                    </ul>
+                </div>
+            </div>
+    {% block js %}
+        <script type='text/javascript'>
+            function afficherImage(image){
+                $('#model-image').modal('show');
+                $('#show-image').attr('src', `${image}`);
+                $('#download-image').attr('href', `${image}`);
+            }
+
+        </script>
+
+    {% endblock %}
+{% endblock %}
