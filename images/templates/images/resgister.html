@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% comment %} {% load crispy_forms_tags %} {% endcomment %}
+
+
+{% block content %}
+{% if registered %}
+    <h3>Merci! vous fait partir des utilisateurs de ce site</h3>
+{% else %}
+<h3 class="text-center" style="color: #ff5722;"> Veillez vous inscrir en remplissant le formulaire</h3>
+<small>Si vous avez deja un compte existant connectez vous en clickant sur<a class="btn btn-outline-primary btn-sm m-2 text-capitalize" href="{% url 'login' %}">Connecter</a>
+</small>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+           <div class="row">
+               <div class="col-md-12">
+                {{ form.as_p }}
+                {{ form1.as_p }}
+                <input type="submit" value="Enregistre" class="btn btn-primary btn-block">
+               </div>
+
+           </div>
+      
+
+    </form>    
+{% endif %}    
+
+{% endblock %}

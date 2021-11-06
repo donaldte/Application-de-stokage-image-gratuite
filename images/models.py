@@ -29,6 +29,7 @@ class Images(models.Model):
 class UserImages(models.Model):
     name = models.CharField(max_length=200)  
     image = models.ImageField(upload_to='userImages/', null=True, blank=True)
+    description = models.TextField(default='unknow')
     date_added = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
@@ -44,5 +45,16 @@ class Contact(models.Model):
         ordering = ['-date']  
 
     def __str__(self):
-        return self.name              
+        return self.name     
+
+
+class UserModel(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    biographie = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.user.username
+    
+
+
     

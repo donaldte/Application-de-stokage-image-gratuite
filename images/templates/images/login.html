@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h3 class="text-center " style="color: #ff5722;"> Connectez vous en remplisant le formulaire suivant </h3>
+
+<form action="" method="POST">
+    {% csrf_token %}    
+    <label for="username"> Nom d'utilisateur:</label>
+    <input type="text" name="username" class="form-control">
+
+    <label for="password">Mot de passe:</label>
+    <input type="password" name="password" class="form-control">
+
+    <input class="btn btn-primary mt-3" type="submit" value="Connecter">
+</form>
+<h5 class="text-center">Si vous n'avez pas de compte clickez sur<a class="btn btn-outline-primary btn-sm m-2 text-capitalize" href="{% url 'register' %}">S'enregistrer </a>
+</h5>
+
+{% endblock %}

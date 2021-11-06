@@ -1,6 +1,7 @@
 from django import forms
-from django.forms import widgets
-from .models import Contact
+from django.contrib.auth.models import User
+from .models import Contact, UserModel
+from django.contrib.auth.forms import UserCreationForm
 
 
 class FormContact(forms.ModelForm):
@@ -16,8 +17,28 @@ class FormContact(forms.ModelForm):
         }
 
         widgets = {
-            'text':forms.Textarea(attrs={'class':'form-control', 'rows':2, 'cols':75, 'placeholder':'Entrez votre message ici.'})
+            'text':forms.Textarea(attrs={'class':'form-control', 'rows':2, 'cols':75, 'placeholder':'Entrez votre message ici.'}),
+            'email':forms.TextInput(attrs={'class':'form-control'}),
+            'name':forms.TextInput(attrs={'class':'form-control'})
         }
         
+class AuthenForm(UserCreationForm):
+    class Meta():
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password1',
+            'password2'
+        ]
 
+class InitForm(forms.ModelForm):
+    class Meta:
+        model = UserModel
+        fields = ['biographie']  
+        widgets ={
+            'biographie':forms.Textarea(attrs={'class':'form-control' ,'cols':80, 'rows':2, 'placeholder':'Je suis developeur java, python.' })
+        }      
        

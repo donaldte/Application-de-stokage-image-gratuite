@@ -1,8 +1,11 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Categories, Images, UserImages, Contact
 from django.core.paginator import Paginator
-from .form import FormContact
+from .form import FormContact, AuthenForm, InitForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -35,15 +38,23 @@ def categories(request, id):
             }
     return render(request, 'images/index.html', content )
 
-
+@login_required
 def userImage(request):
     if request.method=='POST':
-        name = request.POST.get('name')
-        image = request.POST.get('image')
-        img=UserImages(name=name, image=image)
-        img.save()
-                
+        image = request.POST.get('image',)
+        description = request.POST.get('description',)
+        username = request.POST.get('username',)
+        userImage =UserImages(image=image, description=description, name=username)
+        if userImage:
+            userImage.save()
+        else:
+            HttpResponse("<h3 style='text-align: center'>une erreur a ete emise s'il vous plait veillez reesayer. </h3>")    
+        
+        return HttpResponseRedirect('merciemagefrom')            
     return render(request, 'base.html') 
+
+def merciimage(request):
+    return render(request, 'images/mercimage.html')    
 
 
 def contact(request):
@@ -63,9 +74,50 @@ def merci(request):
     print(contact)
     for element in contact:
         name=element.name
-    return render(request, 'images/merci.html', {'name':name})    
+    return render(request, 'images/merci.html', {'name':name})  
+
+def register(request):
+    if request.POST:
+        form = AuthenForm(request.POST)
+        form1 = InitForm(request.POST)
+        if form.is_valid() and form1.is_valid():
+            user = form.save()
+            user.save()
+            final = form1.save(commit=False)
+            final.user = user
+            final.save()
+
+            return HttpResponseRedirect('login')
+        else:
+            print(form.errors, form1.errors)
+
+    else:
+        form = AuthenForm()    
+        form1 = InitForm()       
+    return render(request, 'images/resgister.html', {'form':form, 'form1':form1})
 
 
+def userLogin(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                return HttpResponse("vous n'est pas active sur ce site")
+        else:
+            return HttpResponse("<h3 style='color:red; text-align:center'> votre mot de passe et nom d'utilisateur ne coinsident pas<br><a href='login' style='color:green'>Ressayez</a></h3>")                
+    else:
+        return render(request, 'images/login.html')    
+
+@login_required
+def userLogout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
                 
 

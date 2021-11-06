@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static './css/bootstrap.min.css' %}">  
     <script src="{% static './js/all.js' %}"></script> 
     <meta charset="UTF-8">
+    <meta name="description" content="telecharger gratuitement les images deja traitees de haute qualitee, sans droit d'auteur pour vos designs et autres  ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>africaImage</title>
@@ -62,6 +63,32 @@
                         </div>
                         </div>  
                     </li>
+
+                  {% if user.is_authenticated %}
+
+                    <li class="nav-item" >
+                      <a class="nav-link ted  " href="{% url 'logout' %}">Deconecter</a>
+                    </li>
+
+                    <li class="nav-item m-2 text-white">
+                           <p style="color: aqua" class="item-align-end">
+                            <i style="color: aqua" class="fas fa-user"></i id="username"> {{ user.username }}
+                           </p>
+                        </li>
+
+
+                  {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link ted " href="{% url 'register' %}">S'enregisrer</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link ted " href="{% url 'login' %}">Connecter</a>
+                    </li>
+
+                  {% endif %}  
+
+
                      
                     
             
@@ -79,12 +106,12 @@
          
            </div>
        </div>
-<div class="row text-center mt-3">
-  <div class="col-md-12">
-     <button type="button" class="btn btn-warning btn-sm ml-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Envoiyez une image </button>
 
-  </div>
-</div>
+        <div class="row text-center mt-3">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-warning btn-sm ml-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Envoiyez une image </button>
+            </div>
+        </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -96,17 +123,25 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" id="post-form" action="">
+        <form action="{% url 'create' %}" method="POST" >
+
+
           {% csrf_token %}
-          
-            <label for="username">Votre nom</label>
-            <input required class="form-control" type="text" name="username" id="username">
-            <label for="image">Image</label>
+          {% if user.is_authenticated  %}
+           <label for="image">Image</label>
             <input required class="form-control" name="image" type="file" id="image">
+            <label for="description"> Description</label>
+            <textarea name="description" required placeholder="ex: Mon image est une femme heureuse d'etre entrain de cultiver son chanps." class="form-control" id="description" cols="30" rows="2"></textarea>
+            <input type="hidden" class="form-control" name="username" value="{{ user.username }}">
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
             <input type="submit" class="btn btn-primary" value="Envoiyez">
           </div>
+          {% else %}
+            <small class="text-align-center">Pour envoyez une image vous devez vous connecter cela nous permet d'attribuer chaque image a son auteur.<br> <a class="btn btn-outline-primary" href='login'> connectez vous <a></small>
+          {% endif %}
+          
+           
         </form>
       </div>
     </div>
@@ -114,7 +149,7 @@
 </div>
 
        {% block content %}{% endblock %}
-   </div>
+</div>
 
         <!-- Footer -->
         <footer class="page-footer font-small special-color-dark pt-4" style='background: rgb(19, 44, 44); color: white;'>
@@ -152,7 +187,7 @@
           
             <!-- Copyright -->
             <div class="footer-copyright text-center py-3">© 2021 Copyright:
-              <em>Dprogrammeur <span class="text-warning">sponsoriser par: AfricaCode</span></em>
+              <em>DProgrammeur <span class="text-warning"></span></em>
             </div>
             <!-- Copyright -->
           
@@ -164,26 +199,34 @@
 
     {% block js %}{% endblock %}
     <script type="text/javascript">
-    $(document).on('submit', '#post-form', function(e){
-        e.preventDefault();
-        $.ajax({
-            type:'POST',
-            url: "{% url 'create' %}",
-            data:{
-                name:$('#username').val(),
-                image:$('#image').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      // Add events
+     
 
-            },
-            success:function(){
-                alert('Merci beaucoup nous avons recu!');
-            },
-            errors:function(response){
-                alert('Il y a une erreur lors de l\'envoi');
-            }
+      // Grab the files and set them to our variable
+         
+
+
+    // $(document).on('submit', '#post-form', function(){
+        
+    //     $.ajax({
+    //         type:'POST',
+    //         url: "{% url 'create' %}",
+    //         data:{
+    //             username:$('#username'),
+    //             description:$()
+    //             image:$('#image').val(), 
+    //             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+
+    //         },
+    //         success:function(){
+    //             alert('Merci beaucoup nous avons recu!');
+    //         },
+    //         errors:function(response){
+    //             alert('Il y a une erreur lors de l\'envoi');
+    //         }
             
-        })
-    })
+    //     })
+    // })
 
     
 </script>
